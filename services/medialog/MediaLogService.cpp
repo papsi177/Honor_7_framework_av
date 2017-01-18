@@ -89,4 +89,8 @@ status_t MediaLogService::onTransact(uint32_t code, const Parcel& data, Parcel* 
     return BnMediaLogService::onTransact(code, data, reply, flags);
 }
 
+extern "C" void _ZN7android15MediaLogService21CreateMediaLogProcessEv()
+{
+}
+
 }   // namespace android

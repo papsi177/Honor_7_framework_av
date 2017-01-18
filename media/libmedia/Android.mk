@@ -59,6 +59,7 @@ LOCAL_SRC_FILES:= \
     MediaScannerClient.cpp \
     CharacterEncodingDetector.cpp \
     IMediaDeathNotifier.cpp \
+    MediaLogException.cpp \
     MediaProfiles.cpp \
     MediaResource.cpp \
     MediaResourcePolicy.cpp \
@@ -68,7 +69,12 @@ LOCAL_SRC_FILES:= \
     Visualizer.cpp \
     MemoryLeakTrackUtil.cpp \
     StringArray.cpp \
-    AudioPolicy.cpp
+    AudioPolicy.cpp \
+    hw_log.cpp
+
+ifeq ($(TARGET_USES_HUAWEI_LOG),true)
+LIBLOG_CFLAGS := -DHUAWEI_LOG
+endif
 
 
 #QTI Resampler

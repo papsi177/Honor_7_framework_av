@@ -1276,4 +1276,12 @@ void AudioSystem::AudioPolicyServiceClient::binderDied(const wp<IBinder>& who __
     ALOGW("AudioPolicyService server died!");
 }
 
+extern "C" void _ZN7android11AudioSystem14getLowPowerApkEv()
+{
+}
+
+extern "C" void _ZN7android25getHuaweiAudioAlgoServiceEv()
+{
+}
+
 } // namespace android

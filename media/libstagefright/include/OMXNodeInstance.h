@@ -21,6 +21,7 @@
 #include "OMX.h"
 
 #include <utils/RefBase.h>
+#include <utils/SortedVector.h>
 #include <utils/threads.h>
 
 namespace android {

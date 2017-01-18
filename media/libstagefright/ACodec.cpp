@@ -1746,7 +1746,10 @@ status_t ACodec::configureCodec(
             ALOGE("[%s] storeMetaDataInBuffers (input) failed w/ err %d",
                     mComponentName.c_str(), err);
 
-            return err;
+            if (mOMX->livesLocally(mNode, getpid())) {
+                return err;
+            }
+            ALOGI("ignoring failure to use internal MediaCodec key.");
         }
         // For this specific case we could be using camera source even if storeMetaDataInBuffers
         // returns Gralloc source. Pretend that we are; this will force us to use nBufferSize.
@@ -3568,7 +3571,7 @@ status_t ACodec::setupAVCEncoderParameters(const sp<AMessage> &msg) {
 
     // XXX
     // Allow higher profiles to be set since the encoder seems to support
-#if 0
+#ifdef USE_AVC_BASELINE_PROFILE
     if (h264type.eProfile != OMX_VIDEO_AVCProfileBaseline) {
         ALOGW("Use baseline profile instead of %d for AVC recording",
             h264type.eProfile);
@@ -4209,6 +4212,16 @@ status_t ACodec::getPortFormat(OMX_U32 portIndex, sp<AMessage> &notify) {
                         rect.nWidth = videoDef->nFrameWidth;
                         rect.nHeight = videoDef->nFrameHeight;
                     }
+#ifdef MTK_HARDWARE
+                    if (!strncmp(mComponentName.c_str(), "OMX.MTK.", 8) && mOMX->getConfig(
+                            mNode, (OMX_INDEXTYPE) 0x7f00001c /* OMX_IndexVendorMtkOmxVdecGetCropInfo */,
+                            &rect, sizeof(rect)) != OK) {
+                        rect.nLeft = 0;
+                        rect.nTop = 0;
+                        rect.nWidth = videoDef->nFrameWidth;
+                        rect.nHeight = videoDef->nFrameHeight;
+                    }
+#endif
 
                     if (rect.nLeft < 0 ||
                         rect.nTop < 0 ||

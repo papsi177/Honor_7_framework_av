@@ -173,6 +173,10 @@ ifeq ($(TARGET_BOARD_PLATFORM),omap4)
 LOCAL_CFLAGS += -DBOARD_CANT_REALLOCATE_OMX_BUFFERS
 endif
 
+ifeq ($(TARGET_USE_AVC_BASELINE_PROFILE), true)
+LOCAL_CFLAGS += -DUSE_AVC_BASELINE_PROFILE
+endif
+
 ifeq ($(call is-vendor-board-platform,QCOM),true)
 LOCAL_C_INCLUDES += $(TARGET_OUT_HEADERS)/mm-audio
 ifeq ($(strip $(AUDIO_FEATURE_ENABLED_EXTN_FLAC_DECODER)),true)
@@ -183,6 +187,10 @@ endif
 ifeq ($(strip $(AUDIO_FEATURE_ENABLED_FLAC_OFFLOAD)),true)
     LOCAL_CFLAGS += -DFLAC_OFFLOAD_ENABLED
 endif
+
+#ifeq ($(strip $(TARGET_USES_HISI_3635)),true)
+#    LOCAL_CFLAGS += -DHISI_3635
+#endif
 
 LOCAL_CLANG := true
 
